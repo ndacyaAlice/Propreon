@@ -1,0 +1,3 @@
+# Propreon  
+
+Propreon is a blockchain-powered platform built on **ICP (Internet Computer)** and leveraging **Azle**, dedicated to transforming how creative industries, including movie productions and music artists, rent properties and locations. By combining the transparency and security of blockchain with innovative technology, Propreon enables seamless property rentals, ensuring reliability and efficiency for both property owners and creatives.
