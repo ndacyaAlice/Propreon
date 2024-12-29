@@ -1,10 +1,8 @@
 import {
-    nat,
     text,
     Record,
     Variant,
     Principal,
-    Vec, 
     bool,
     Opt,
     nat64
@@ -59,9 +57,11 @@ export const Booking=Record({
   PropertyId: text,
   Owner: Principal,
   Visitor: Principal,
+  VisitorName: text,
+  VisitorEmail:text,
   VisitDate: text,
   Status:  BookStatus,
-  Amount: nat64,    
+  Amount: text,    
   PaymentStatus:  PaymentStatus,
   CreatedAt: text,
   paid_at_block: Opt(nat64),
@@ -70,13 +70,26 @@ export const Booking=Record({
 
 export type Booking = typeof Booking.tsType
 
+export const BookingProps= Record({
+    PropertyId: text,
+    VisitorName: text,
+    VisitorEmail:text,
+    VisitDate: text,  
+})
 
+export type BookingProps = typeof BookingProps.tsType
+
+export const ConfirmProps = Record({
+    Receivor: Principal,
+    Amount: nat64,
+    block: nat64,
+    memo: nat64  
+})
+export type ConfirmProps = typeof ConfirmProps.tsType
 export const Message = Variant({
     NotFound: text,
     InvalidPayload: text,
     Error: text,
-    NoProfile: text,
-    Unauthorized: text
   })
   
   export type Message = typeof Message.tsType

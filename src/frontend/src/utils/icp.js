@@ -1,4 +1,4 @@
-import { PropeonCanister } from "./canister";
+import { getLedgerCanister, PropeonCanister } from "./canister";
 import { getAuthClient } from "./auth";
 
 export async function Contract(){
@@ -11,4 +11,5 @@ export async function Contract(){
     window.auth.principal = authClient.getIdentity()?.getPrincipal();
     window.auth.principalText = authClient.getIdentity()?.getPrincipal().toText();
     window.canister.PropeonCanister = await PropeonCanister();
+    window.canister.ledger = await getLedgerCanister();
 }

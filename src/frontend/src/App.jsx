@@ -7,6 +7,8 @@ import AdminLayout from "./pages/AdminLayout";
 import BuildingTable from "./components/Mycomponent/BuildingTable";
 import CreateProperty from "./components/Mycomponent/CreateProperty";
 import { AuthContextProvider } from "./context/Auth";
+import BookByPropertyTable from "./components/Mycomponent/BookByPropertyTable";
+import MyBookTable from "./components/Mycomponent/MyBookTable";
 
 
 const routes = [
@@ -23,7 +25,9 @@ const routes = [
         element: <AuthContextProvider><AdminLayout/></AuthContextProvider>,
         children: [
             {path: 'PropertyLists/', element: <BuildingTable/>},
-            {path: 'CreateProperty/', element:<CreateProperty/>}
+            {path: 'CreateProperty/', element:<CreateProperty/>},
+            {path:"Property/:id/bookings/", element:<BookByPropertyTable/>},
+            {path: "MyBookings/", element:<MyBookTable/>}
         ]
     },
 ]   

@@ -1,19 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import { Input } from "@/components/ui/input"
-const DatePickers = () => {
+const DatePickers = ({selectionRange,setSelectionRange}) => {
     const [open, setOpen] = useState(false);
-    const [selectionRange, setSelectionRange] = useState({
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection',
-    });
+  
     const inputRef = useRef(null);
 
     const handleSelect = (ranges) => {
         setSelectionRange(ranges.selection);
         console.log(ranges);
-        setOpen(false); // Close the picker after selection
+        setOpen(false); 
     };
 
     const togglePicker = () => {

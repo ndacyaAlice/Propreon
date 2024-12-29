@@ -28,9 +28,6 @@ const ViewPage = () => {
   }, [dispatch, id, navigate]);
 
   const {  loading, GetOneProperty,error} = useSelector((state)=>state.GetOneProperty)
-  if(GetOneProperty){
-    console.log(GetOneProperty)
-  }
     return (
     <>
     <div className="flex flex-col md:flex-row p-4 w-full sm:w-[75%] m-auto gap-8">
@@ -85,16 +82,11 @@ const ViewPage = () => {
             </div>
             <div className="md:w-4/12 w-full">
                  <div className="rounded-lg p-4">
-                    <CardForm/>
+                    <CardForm PropertyId={GetOneProperty.id}/>
                 </div>
             </div>
         </>
-      )}
-
-
-
-
-            
+      )}            
         </div>
     </>
         
