@@ -1,13 +1,12 @@
 import {Err, Ok ,ic, text} from "azle/experimental";
 import { v4 as uuidv4 } from "uuid";
-import { PropertyProps } from "../types/dataTypes";
+import { Property, PropertyProps } from "../types/dataTypes";
 import getDate from "../utils/Date";
 import { PropertyStorage } from "../Storage/Storage";
 
 
 
 class PropertyController {
-
     static CreateProperty=(payload:PropertyProps)=>{
      
         try{
@@ -38,14 +37,12 @@ class PropertyController {
                 CreatedAt: getDate(),
                 UpdatedAt: getDate() 
             }
-            console.log(NewProperty)
             PropertyStorage.insert(NewProperty.id,NewProperty)
             return Ok("Created successfully")
         }catch(error: any) {
             return Err({Error: `Error occured ${error.message}`})
         }
     }
-    
     static  GetAllProperty=()=>{
         try{
             const AllProperties = PropertyStorage.values()
@@ -54,7 +51,22 @@ class PropertyController {
             return Err({Error: `Error occured ${error.message}`})   
         }
     }
+   
+    static getMyProperty=()=>{
+        const AllProperties = PropertyStorage.values()
+        if(AllProperties.length == 0) {
+            return Err({NotFound: "Empty"})
+        }
 
+        const MyProperties = AllProperties.filter((property: Property)=>(
+            JSON.stringify(property.Owner) == JSON.stringify(ic.caller())
+        )) 
+        if(MyProperties.length == 0) {
+            return Err({NotFound: "Empty"})
+        }
+
+        return Ok(MyProperties)
+    }
     static GetOneProperty=(PropertyId: text)=>{
         try{
            const PropertyOpt = PropertyStorage.get(PropertyId)

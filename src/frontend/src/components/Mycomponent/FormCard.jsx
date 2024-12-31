@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState } from "react"
  
 import { Button } from "@/components/ui/button"
 import {
@@ -11,16 +11,50 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import DatePickers from "./DatePicker"
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch,useSelector} from "react-redux";
+import { useForm } from 'react-hook-form';
+import { BookValid } from "@/validation/BookValid"
+import { BeatLoader } from "react-spinners"
+import { PayThunk } from "@/Redux/action/Pay"
  
-export default function CardForm() {
+export default function CardForm({PropertyId}) {
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+});
+const dispatch = useDispatch();
+const { 
+  register, 
+  handleSubmit, 
+  setValue, formState: { errors } } = useForm({
+  resolver: yupResolver(BookValid),
+});
+
+const formatToYYYYMMDD=(dateString)=> {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+const submit=(data)=>{
+  const start = formatToYYYYMMDD(selectionRange.startDate)
+  const end = formatToYYYYMMDD(selectionRange.endDate)
+
+const cleanData = {
+  ...data,
+  PropertyId,
+  VisitDate: `${start}_${end}`
+
+}
+console.log(cleanData)
+dispatch(PayThunk(cleanData))
+}
+
+const { loadz,error} = useSelector((state)=>state.Pay)
   return (
     <Card className="w-[350px]">
       <CardHeader>
@@ -28,37 +62,37 @@ export default function CardForm() {
         <CardDescription>Book the period you will visit</CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit(submit)}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Name of your project" />
+              <Label htmlFor="VisitorName">Name</Label>
+              <Input id="VisitorName" {...register("VisitorName")} placeholder="Your name" type="text"/>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Framework</Label>
-              <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="next">Next.js</SelectItem>
-                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                  <SelectItem value="astro">Astro</SelectItem>
-                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="VisitorEmail">E-mail</Label>
+              <Input id="VisitorEmail" {...register("VisitorEmail")} type="email" placeholder="Your Email" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Select Period</Label>
-               <DatePickers/>
+              <Label htmlFor="">Stay Period</Label>
+               <DatePickers selectionRange={selectionRange} setSelectionRange={setSelectionRange}/>
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        {/* <Button variant="outline">Cancel</Button> */}
-        <Button className="w-full text-center">Book</Button>
+          <CardFooter className="flex justify-between">
+        <Button className="w-[40%] mx-auto text-center z-50">
+        {
+              loadz? (
+                <div className="absolute left-1/2 transform -translate-x-1/2 top-1/2 bg-black -translate-y-1/2">
+                  <BeatLoader color="white" loading={loadz} size={10}/>
+                </div>
+              ):(
+                "Book"
+              )
+             }
+
+        </Button>
       </CardFooter>
+        </form>
+      </CardContent> 
     </Card>
   )
 }
