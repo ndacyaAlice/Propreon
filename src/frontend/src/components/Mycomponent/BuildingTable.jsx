@@ -5,7 +5,7 @@ import {
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Button } from "../ui/button";
 import { useSelector, useDispatch } from "react-redux";
-import { GetAllPropertyThunk } from "@/Redux/action/GetAllProperty";
+import { getMyPropertyThunk } from "@/Redux/action/MyProperty";
 
 
 
@@ -13,7 +13,7 @@ import { GetAllPropertyThunk } from "@/Redux/action/GetAllProperty";
 const BuildingTable = () => {
   const dispatch = useDispatch();
   useEffect(()=>{
-   dispatch(GetAllPropertyThunk())
+   dispatch(getMyPropertyThunk())
   },[dispatch])
 
 
@@ -40,7 +40,7 @@ const BuildingTable = () => {
 
     },
   ];
-  const  {  loads,GetAllProperty,errorz } = useSelector((state)=>state.GetAllProperty)
+  const  {  loads,getMyProperty,errorz } = useSelector((state)=>state.getMyProperty)
   return (
     <Box
       sx={{
@@ -52,14 +52,14 @@ const BuildingTable = () => {
      (<div style={{textAlign: "center"}}>
       <p>Loading....</p>
    </div>):  
-   (GetAllProperty?.length  === 0|| errorz)?(
+   (getMyProperty?.length  === 0|| errorz)?(
     <div style={{textAlign: "center"}}>
           <p>No Property</p>
     </div>
   ):(
       <DataGrid
           getRowId={(row)=>(row.id)}
-          rows={GetAllProperty}
+          rows={getMyProperty}
           columns={columns}
           slots={{
             toolbar: GridToolbar,

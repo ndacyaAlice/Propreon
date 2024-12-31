@@ -45,7 +45,19 @@ const Sidebar = ({BarOpen, toggleBarOpen}) => {
             <IoList size={20} />
 							</a>
             <a  href="/PropertyLists" className={`no-underline text-black hover:text-black origin-left duration-100`}>
-            All Property
+            My All Property
+							</a>
+           
+           </li>
+           <li  className="flex items-center gap-x-4 cursor-pointer p-2 mt-1
+           border-l-4 border-transparent hover:border-violet-400 active:border-violet-500
+           origin-left duration-100
+           ">
+            <a className="text-2xl no-underline" href="/MyBookings">
+            <IoList size={20} />
+							</a>
+            <a  href="/MyBookings" className={`no-underline text-black hover:text-black origin-left duration-100`}>
+            My All Booking
 							</a>
            
            </li>
